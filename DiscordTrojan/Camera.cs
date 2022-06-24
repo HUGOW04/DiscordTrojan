@@ -26,7 +26,6 @@ namespace DiscordTrojan
         FilterInfoCollection filterInfo;
 
 
-
         private void Camera_Load(object sender, EventArgs e)
         {
 
@@ -48,7 +47,6 @@ namespace DiscordTrojan
             }
             catch
             {
-                return;
             }
         }
 
@@ -71,7 +69,7 @@ namespace DiscordTrojan
             }
             catch
             {
-                return;
+            
             }
         }
 
@@ -84,7 +82,7 @@ namespace DiscordTrojan
             }
             catch
             {
-                return;
+            
             }
         }
     }
