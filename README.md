@@ -10,7 +10,9 @@
 !StartUp true/false this will add program to startup if you type true
 !CameraSnap get a picture with your camera
 !Target choose a target to target/!Untarget User to untarget them
-!Cmd command will start cmd and execute it\n\n!MicRecord Record the mic for a few seconds```
+!Cmd command will start cmd and execute it\n\n!MicRecord Record the mic for a few seconds
+```
+
 
 
 ## Legal warning
