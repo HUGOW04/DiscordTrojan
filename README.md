@@ -1,5 +1,5 @@
 
-![desk](https://user-images.githubusercontent.com/54809176/187528469-2c9e470b-6cd2-4ac2-a5e0-5c7b705efc09.png)
+
 
 ## Legal warning
 
